@@ -30,6 +30,18 @@ To get the latest updates in API, you can click ‘Watch’ on our [KuCoin Docs 
 
 **To reinforce the security of the API, KuCoin upgraded the API key to version 2.0, the validation logic has also been changed. It is recommended to [create](https://www.kucoin.com/account/api) and update your API key to version 2.0. The API key of version 1.0 is invalid. [Check new signing method](#signing-a-message)**
 
+
+**10/01/23**:
+
+- add Query Margin Trading Pairs `GET /api/v2/margin/symbols`interface
+- add Query Lending Configuration `GET /api/v2/margin/lend/config`interface
+- add Lending Order Query (Paginated) `GET /api/v2/margin/lend/orders`interface
+- add Query Single Lending Order `GET /api/v2/margin/lend`interface
+- add Query Lending Records `GET /api/v2/margin/lend/trade/orders`interface
+- Deprecate `GET /api/v1/isolated/symbols`interface， please use `GET /api/v2/margin/symbols`interface
+- Deprecate `GET /api/v1/margin/lend/active`interface and `GET /api/v1/margin/lend/done`interface， please use `GET /api/v2/margin/lend/orders`
+- Deprecate `GET /api/v1/margin/lend/trade/unsettled`interface and `GET /api/v1/margin/lend/trade/settled`interface， please use`GET /api/v2/margin/lend/trade/orders`interface
+
 **11/08/22**:
 
 - Deprecate `POST /api/v1/accounts` interface
@@ -5058,6 +5070,75 @@ This API is restricted for each account, the request rate limit is `1 times/3s`.
 | basePrecision | Base currency precision |
 | quotePrecision | Quote currency precision|
 
+
+## Query Margin Trading Pairs
+```json 
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669709339758,
+        "items": [
+            {
+                "symbol": "BTC-USDT",
+                "name": "BTC-USDT",
+                "enableTrading": true,
+                "market": "USDS",
+                "baseCurrency": "BTC",
+                "quoteCurrency": "USDT",
+                "baseIncrement": "0.00000001",
+                "baseMinSize": "0.00000001",
+                "quoteIncrement": "0.000001",
+                "quoteMinSize": "0.000001",
+                "baseMaxSize": "10000000000",
+                "quoteMaxSize": "99999999",
+                "priceIncrement": "0.00000001",
+                "feeCurrency": "USDT",
+                "priceLimitRate": "1",
+                "minFunds": "0.000001"
+            }
+        ]
+    }
+}
+```
+### HTTP REQUEST
+ `GET /api/v2/margin/symbols`
+
+### Example
+`GET /api/v2/margin/symbols?isIsolated=True&symbol=KCS-USDT`
+
+### API KEY PERMISSIONS
+This API endpoint requires the `General` permission..
+
+### PARAMETERS
+| Param      | Type    | Description                                              |
+| ---------- | ------- | -------------------------------------------------------- |
+| isIsolated | Boolean | true-Isolated margin, false-Cross margin; default: false |
+| symbol     | STRING  | Trading pair                                             |
+
+### RESPONSES
+| Field          | Description                                                                                                           |
+| -------------- | --------------------------------------------------------------------------------------------------------------------- |
+| symbol         | Trading pair unique identifier                                                                                        |
+| name           | Trading pair name. Changes when renamed.                                                                              |
+| baseCurrency   | Refers to the asset traded (the asset written first in the trading pair)                                              |
+| quoteCurrency  | The coin used to determine the value of the traded asset (the asset written second in the trading pair)               |
+| market         | The marketplace                                                                                                       |
+| baseMinSize    | The minimum size when placing an order.                                                                               |
+| quoteMinSize   | The minimum value when placing a market order.                                                                        |
+| baseMaxSize    | The maximum size when placing an order.                                                                               |
+| quoteMaxSize   | The maximum value when placing an order.                                                                              |
+| baseIncrement  | The amount the size can be increased by. The size of the order must be a multiple of the baseIncrement.               |
+| quoteIncrement | Market Orders: the amount the quote can be increased by. The quote of the order must be a multiple of quoteIncrement. |
+| priceIncrement | Limit Orders: the amount the price can be increased by. The price of the order must be a multiple of priceIncrement.  |
+| feeCurrency    | The currency trading fees are calculated in.                                                                          |
+| enableTrading  | Whether or not trading is enabled                                                                                     |
+| priceLimitRate | The price protection threshold.                                                                                       |
+| minFunds       | Minimum transaction amount                                                                                            |
+
+
 # Borrow & Lend
 
 ## Post Borrow Order
@@ -5406,7 +5487,7 @@ When the priority interest rate is higher than the acceptable min. day rate, the
 When the priority interest rate is lower than the acceptable min. day rate, the system will place lending orders at the rate of the latter one.
 
 
-## Get Active Order
+## Get Active Order（Deprecate）
 ```json
 {
 	  "currentPage": 1,
@@ -5456,7 +5537,7 @@ This endpoint requires the **"Trade"** permission.
 | term         | Term (Unit: Day)           |
 | createdAt    | Time of the event (millisecond)       |
 
-## Get Lent History
+## Get Lent History（Deprecate）
 ```json
 {
     "currentPage": 1,
@@ -5508,7 +5589,7 @@ This endpoint requires the **"Trade"** permission.
 | createdAt    | Time of the event (millisecond)      |
 | status       | Order status: FILLED -- Fully filled, CANCELED -- Canceled |
 
-## Get Active Lend Order List
+## Get Active Lend Order List（Deprecate）
 ```json
 {
     "currentPage": 1,
@@ -5560,7 +5641,7 @@ This endpoint requires the **"Trade"** permission.
 | term            | Term (Unit: Day)                                     |
 | maturityTime    |  Maturity time  (millisecond)                        |
 
-## Get Settled Lend Order History
+## Get Settled Lend Order History（Deprecate）
 ```json
 {
     "currentPage": 1,
@@ -5731,8 +5812,285 @@ This endpoint requires the **"General"** permission.
 | term         | Term (Unit: Day)                         |
 | timestamp    | Time of execution in nanosecond          |
 
+
+## Query Lending Configuration
+```json
+ {
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669709409384,
+        "items": [
+            {
+                "currency": "BTC",
+                "lendMinSize": "0.001",
+                "lendMaxSize": "300",
+                "increment": "0.0001",
+                "minDailyIntRate": "0",
+                "maxDailyIntRate": "0.002",
+                "precisionDailyIntRate": "0.00001",
+                "terms": "7,14,28"
+            }
+        ]
+    }
+}
+ ```
+
+### HTTP REQUEST
+`GET /api/v2/margin/lend/config`
+
+### Example
+`GET /api/v2/margin/lend/config?currency=USDT`
+
+### API KEY PERMISSIONS
+This API endpoint requires the `General` permission..
+
+### PARAMETERS
+| Param    | Type   | Description                                                          |
+| -------- | ------ | -------------------------------------------------------------------- |
+| currency | STRING | Path parameter, coin code. If empty, all coin types will be queried. |
+
+### RESPONSES
+| Field                 | Description                                                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| currency              | Coin type                                                                                                        |
+| lendMinSize           | Minimum size of a loan                                                                                           |
+| lendMaxSize           | Maximum size of a loan                                                                                           |
+| increment             | The amount the size of a loan can be increased by. The size of a loan must be a multiple of the increment value. |
+| minDailyIntRate       | Minimum daily interest rate                                                                                      |
+| maxDailyIntRate       | Maximum daily interest rate                                                                                      |
+| precisionDailyIntRate | Daily interest rate precision                                                                                    |
+| terms                 | Term of the loan. Units in days. Comma-separated. Example: 7,14,28                                               |
+		
+
+
+## Query Lending Market List
+```json
+ {
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669709478401,
+        "items": [
+            {
+                "currency": "BTC",
+                "size": "300",
+                "dailyIntRate": "0.002",
+                "term": 7
+            }
+        ]
+    }
+}
+ ```
+### HTTP REQUEST
+`GET /api/v2/margin/lend/market`
+
+### Example
+`GET /api/v2/margin/lend/market?currency=USDT&term=7`
+
+### API KEY PERMISSIONS
+This API endpoint requires the `General` permission..
+### PARAMETERS
+| Param    | Type   | Description                  |
+| -------- | ------ | ---------------------------- |
+| currency | STRING | Coin Code                    |
+| term     | INT    | Term of loan. Units in days. |
+
+### RESPONSES
+| Field        | Description                  |
+| ------------ | ---------------------------- |
+| currency     | Coin Code                    |
+| size         | Loan amount                  |
+| dailyIntRate | Daily interest rate          |
+| term         | Term of loan. Units in days. |
+
+
+
+## Lending Order Query (Paginated)
+```json 
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669708513820,
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalNum": 1,
+        "totalPage": 1,
+        "items": [
+            {
+                "orderId": "637c85a15403ae00016bd6df",
+                "currency": "USDT",
+                "size": "3000000",
+                "filledSize": "144",
+                "dailyIntRate": "0.002",
+                "term": 7,
+                "createdAt": 1669105056560,
+                "status": "ACTIVE"
+            }
+        ]
+    }
+}
+```
+### HTTP REQUEST
+`GET /api/v2/margin/lend/orders`
+
+### Example
+`GET /api/v2/margin/lend/orders?currency=USDT&status=FINISH&currentPage=1&pageSize=10`
+
+### API KEY PERMISSIONS
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Param       | Type   | Description                                         |
+| ----------- | ------ | --------------------------------------------------- |
+| currency    | STRING | Coin code                                           |
+| status      | STRING | Order Status: FINISH-completed, ACTIVE-in progress. |
+| currentPage | INT    | Current page, defaults to 1.                        |
+| pageSize    | INT    | The page size, 1<=pageSize<=100, defaults to 50.    |
+
+### RESPONSES
+| Field        | Description                                             |
+| ------------ | ------------------------------------------------------- |
+| orderId      | Order ID                                                |
+| currency     | Coin code                                               |
+| size         | Total size of order                                     |
+| filledSize   | The amount of the order filled                          |
+| dailyIntRate | Daily interest in decimal format. 0.002 refers to 0.2%. |
+| term         | Term of loan (units in days)                            |
+| createdAt    | Time order was placed (units: milliseconds)             |
+| status       | Order status: FINISH-completed, ACTIVE-in progress.     |
+
+
+## Query Single Lending Order
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "orderId": "6385c0b3e0debdb6feb06e97",
+        "currency": "USDT",
+        "size": "11",
+        "filledSize": "0",
+        "dailyIntRate": "0.002",
+        "term": 7,
+        "createdAt": 1669710002360,
+        "status": "ACTIVE"
+    }
+}
+```
+
+### HTTP REQUEST
+`GET /api/v2/margin/lend`
+
+### Example
+`GET /api/v2/margin/lend?orderId=6385c0b3e0debdb6feb06e97`
+
+### API KEY PERMISSIONS
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Param   | Type   | Description   |
+| ------- | ------ | ------------- |
+| orderId | STRING | The order ID. |
+
+### RESPONSES
+| Field        | Description                                             |
+| ------------ | ------------------------------------------------------- |
+| orderId      | Order ID                                                |
+| currency     | Coin code                                               |
+| size         | The total size of the order                             |
+| filledSize   | Amount of the order filled                              |
+| dailyIntRate | Daily interest in decimal format. 0.002 refers to 0.2%. |
+| term         | Term of loan (units in days)                            |
+| createdAt    | Time order was placed (units: milliseconds)             |
+| status       | Order status: FINISH-completed, ACTIVE-in progress.     |
+
+
+## Query Lending Records
+```json
+ {
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669711220219,
+        "currentPage": 1,
+        "pageSize": 10,
+        "totalNum": 39,
+        "totalPage": 4,
+        "items": [
+            {
+                "tradeId": "637c85a754f4d9000122f510",
+                "currency": "USDT",
+                "size": "11",
+                "repaidSize": "11",
+                "interest": "0.15400056",
+                "accruedInterest": "0",
+                "term": 7,
+                "maturityTime": 1669709863747,
+                "status": "CLEAR",
+                "note": ""
+            },
+            {
+                "tradeId": "6335ab03503ab80001485cb3",
+                "currency": "USDT",
+                "size": "1117",
+                "repaidSize": "1117",
+                "interest": "15.63799944",
+                "accruedInterest": "0",
+                "term": 7,
+                "maturityTime": 1665066311258,
+                "status": "CLEAR",
+                "note": ""
+            }
+        ]
+    }
+}
+ ```
+
+### HTTP REQUEST
+`GET /api/v2/margin/lend/trade/orders`
+
+### Example
+`GET /api/v2/margin/lend/trade/orders?currency=USDT&status=LEND&currentPage=1&pageSize=10`
+
+### API KEY PERMISSIONS
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Param       | Type   | Description                                                      |
+| ----------- | ------ | ---------------------------------------------------------------- |
+| currency    | STRING | Coin code                                                        |
+| status      | STRING | Lending Order Status: LEND-Not fully repaid, CLEAR-Fully repaid. |
+| currentPage | INT    | Current page (default: 1)                                        |
+| pageSize    | INT    | The page size, 1<=pageSize<=100, defaults to 50.                 |
+
+### RESPONSES
+| Field           | Description                                                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| tradeId         | Order ID of the loan                                                                                                                                                        |
+| currency        | Coin code                                                                                                                                                                   |
+| size            | Size of the loan                                                                                                                                                            |
+| repaidSize      | The amount repaid.                                                                                                                                                          |
+| interest        | Total interest                                                                                                                                                              |
+| accruedInterest | Interest due                                                                                                                                                                |
+| term            | Term of loan. Units in days.                                                                                                                                                |
+| maturityTime    | Time of loan maturity (in milliseconds)                                                                                                                                     |
+| status          | Loan Order Status: LEND-Not fully repaid, CLEAR-Fully repaid.                                                                                                               |
+| note            | Notes are added when there is a negative balance, stating that the borrower has a negative balance and indicating whether repayment has been made using the Insurance Fund. |
+
 # Isolated Margin
-## Query Isolated Margin Trading Pair Configuration
+## Query Isolated Margin Trading Pair Configuration（Deprecate）
 ```json
 {
     "code":"200000",

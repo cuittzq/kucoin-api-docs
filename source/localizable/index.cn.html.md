@@ -32,6 +32,17 @@ API分爲兩部分：**REST API和Websocket 實時數據流**
 
 **爲了進一步提升API安全性，KuCoin已經升級到了V2版本的API-KEY，驗籤邏輯也發生了一些變化，建議到[API管理頁面](https://www.kucoin.cc/account/api)添加並更換到新的API-KEY。KuCoin已經停止對老版本API-KEY的支持。[查看新的簽名方式](#99f215f459)**
 
+**10/01/23**:
+
+- 【新增】查詢槓桿交易對接口`GET /api/v2/margin/symbols`接口
+- 【新增】查詢借出幣種配置信息`GET /api/v2/margin/lend/config`接口
+- 【新增】分頁查詢借出委託 `GET /api/v2/margin/lend/orders`接口
+- 【新增】查詢單筆借出委託 `GET /api/v2/margin/lend`接口
+- 【新增】查詢借出記錄`GET /api/v2/margin/lend/trade/orders`接口
+- 【廢棄】查詢逐倉交易對配置`GET /api/v1/isolated/symbols`接口，請使用`GET /api/v2/margin/symbols`接口
+- 【廢棄】查詢活躍借出委託`GET /api/v1/margin/lend/active`、查詢歷史借出委託`GET /api/v1/margin/lend/done`接口，請使用`GET /api/v2/margin/lend/orders`
+- 【廢棄】查詢未結算出借記錄`GET /api/v1/margin/lend/trade/unsettled`、查詢已結算出借記錄`GET /api/v1/margin/lend/trade/settled`接口，請使用`GET /api/v2/margin/lend/trade/orders`接口
+  
 **11/08/22**:
 
 - 【廢棄】廢棄`POST /api/v1/accounts`接口
@@ -4931,6 +4942,75 @@ turnover | 成交額
 | basePrecision | base精度 |
 | quotePrecision | quote精度|
 
+## 查詢槓桿交易對
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669709339758,
+        "items": [
+            {
+                "symbol": "BTC-USDT",
+                "name": "BTC-USDT",
+                "enableTrading": true,
+                "market": "USDS",
+                "baseCurrency": "BTC",
+                "quoteCurrency": "USDT",
+                "baseIncrement": "0.00000001",
+                "baseMinSize": "0.00000001",
+                "quoteIncrement": "0.000001",
+                "quoteMinSize": "0.000001",
+                "baseMaxSize": "10000000000",
+                "quoteMaxSize": "99999999",
+                "priceIncrement": "0.00000001",
+                "feeCurrency": "USDT",
+                "priceLimitRate": "1",
+                "minFunds": "0.000001"
+            }
+        ]
+    }
+}
+```
+該接口可以查詢支持的槓桿交易對
+### Http請求
+ `GET  /api/v2/margin/symbols`
+
+### 請求示例
+`GET  /api/v2/margin/symbols?isIsolated=True&symbol=KCS-USDT`
+
+### Api權限
+該接口需要`通用權限`。
+
+### 請求參數
+| 請求參數   | 類型    | 含義                            |
+| ---------- | ------- | ------------------------------- |
+| isIsolated | Boolean | true-逐倉 ,false-全倉;默認false|
+| symbol     | STRING  | 交易對                          |
+
+### 返回值
+| 字段           | 含義                                                     |
+| -------------- | -------------------------------------------------------- |
+| symbol         | 交易對唯一標識碼                                        |
+| name           | 交易對名稱，重命名後會改變                               |
+| baseCurrency   | 商品貨幣，指一個交易對的交易對象，即寫在靠前部分的資產名 |
+| quoteCurrency  | 計價幣種，指一個交易對的定價資產，即寫在靠後部分資產名   |
+| market         | 交易市場                                                 |
+| baseMinSize    | 下單時size的最小值                                       |
+| quoteMinSize   | 下市價單，funds的最小值                                 |
+| baseMaxSize    | 下單，size的最大值                                      |
+| quoteMaxSize   | 下市價單，funds的最大值                                  |
+| baseIncrement  | 數量增量，下單的size必須為數量增量的正整數倍             |
+| quoteIncrement | 市價單：資金增量，下單的funds必須為資金增量的正整數倍    |
+| priceIncrement | 限價單：價格增量，下單的price必須為價格增量的正整數倍  |
+| feeCurrency    | 交易計算手續費的幣種                                    |
+| enableTrading  | 是否可以用於交易                                        |
+| priceLimitRate | 價格保護閾值                                             |
+| minFunds       | 最小交易金額                                             |
+
+
 # 借貸
 
 ## 發佈借入委託
@@ -5268,7 +5348,7 @@ turnover | 成交額
 當市場最優利率低於可接受最低日利率時，我們將以您設定的可接受最低日利率進行掛單借出。
 
 
-## 查詢活躍借出委託
+## 查詢活躍借出委託（廢棄）
 ```json
 {
     "currentPage":1,
@@ -5318,7 +5398,7 @@ turnover | 成交額
 | term         | 期限，單位天              |
 | createdAt    | 委託時間戳，單位毫秒      |
 
-## 查詢歷史借出委託
+## 查詢歷史借出委託（廢棄）
 ```json
 {
     "currentPage":1,
@@ -5370,7 +5450,7 @@ turnover | 成交額
 | createdAt    | 委託時間戳，單位毫秒                         |
 | status       | 委託狀態：FILLED - 全部成交，CANCELED - 撤銷 |
 
-## 查詢未結算出借記錄
+## 查詢未結算出借記錄（廢棄）
 ```json
 {
     "currentPage":1,
@@ -5422,7 +5502,7 @@ turnover | 成交額
 | term            | 期限，單位天                                     |
 | maturityTime    | 到期時間戳，單位毫秒                             |
 
-## 查詢已結算出借記錄
+## 查詢已結算出借記錄（廢棄）
 ```json
 {
     "currentPage":1,
@@ -5590,8 +5670,287 @@ turnover | 成交額
 | term         | 期限，單位天              |
 | timestamp    | 成交時間戳，單位納秒      |
 
+## 查詢借出幣種配置信息
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669709409384,
+        "items": [
+            {
+                "currency": "BTC",
+                "lendMinSize": "0.001",
+                "lendMaxSize": "300",
+                "increment": "0.0001",
+                "minDailyIntRate": "0",
+                "maxDailyIntRate": "0.002",
+                "precisionDailyIntRate": "0.00001",
+                "terms": "7,14,28"
+            }
+        ]
+    }
+}
+```
+### HTTP請求
+`GET /api/v2/margin/lend/config`
+
+### 請求示例
+`GET  /api/v2/margin/lend/config?currency=USDT`
+
+### API權限
+此接口需要**通用權限**。
+
+### 請求參數
+| 請求參數 | 類型   | 含義                                     |
+| -------- | ------ | ---------------------------------------- |
+| currency | STRING | 幣種代码。为空则查询全部幣種。 |
+
+### 返回值
+| 字段                  | 含義                                       |
+| --------------------- | ------------------------------------------ |
+| currency              | 幣種                                       |
+| lendMinSize           | 單筆最小借出                               |
+| lendMaxSize           | 總計最大借出                               |
+| increment             | 數量增量，借出數量必須是數量增量的正整數倍 |
+| minDailyIntRate       | 最小日利率                                 |
+| maxDailyIntRate       | 最大日利率                                 |
+| precisionDailyIntRate | 日利率精度                                 |
+| terms                 | 期限,單位為:天, 逗號隔開,如: 7,14,28       |
+		
+
+
+## 查詢借貸市場列表
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669709478401,
+        "items": [
+            {
+                "currency": "BTC",
+                "size": "300",
+                "dailyIntRate": "0.002",
+                "term": 7
+            }
+        ]
+    }
+}
+```
+查詢借貸市場列表。只返回利率最小的top100
+### HTTP請求
+`GET /api/v2/margin/lend/market`
+
+### 請求示例
+`GET  /api/v2/margin/lend/market?currency=USDT&term=7`
+
+### API權限
+此接口需要**通用權限**。
+
+### 請求參數
+| 請求參數 | 類型   | 含義         |
+| -------- | ------ | ------------ |
+| currency | STRING | 幣種代码     |
+| term     | INT    | 期限，單位天|
+
+### 返回值
+| 字段         | 含義         |
+| ------------ | ------------ |
+| currency     | 幣種代码     |
+| size         | 借出數量     |
+| dailyIntRate | 日利率       |
+| term         | 期限，單位天 |
+
+
+
+## 分頁查詢借出委託
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669708513820,
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalNum": 1,
+        "totalPage": 1,
+        "items": [
+            {
+                "orderId": "637c85a15403ae00016bd6df",
+                "currency": "USDT",
+                "size": "3000000",
+                "filledSize": "144",
+                "dailyIntRate": "0.002",
+                "term": 7,
+                "createdAt": 1669105056560,
+                "status": "ACTIVE"
+            }
+        ]
+    }
+}
+```
+此接口可以分頁查詢用戶的借出委託，返回值是分頁後的數據，根據委託時間降序排列，最大頁數100
+### HTTP請求
+`GET /api/v2/margin/lend/orders`
+
+### 請求示例
+`GET  /api/v2/margin/lend/orders?currency=USDT&status=FINISH&currentPage=1&pageSize=10`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求參數
+| 請求參數    | 類型   | 含義                                    |
+| ----------- | ------ | --------------------------------------- |
+| currency    | STRING | 幣種code                                |
+| status      | STRING | 委託訂單狀態: FINISH-完成,ACTIVE-進行中 |
+| currentPage | INT    | 當前頁,    默認1，                      |
+| pageSize    | INT    | 頁大小，  1<=pageSize<=100，默認 50   |
+
+### 返回值
+| 字段         | 含義                                      |
+| ------------ | ----------------------------------------- |
+| orderId      | 委託訂單id                               |
+| currency     | 幣種code                                  |
+| size         | 委託總數量                                |
+| filledSize   | 已成交數量                                |
+| dailyIntRate | 日利率小數。 0.002表示0.2%                 |
+| term         | 期限，單位天                             |
+| createdAt    | 委託時間戳，單位毫秒                      |
+| status       | 委託訂單狀態: FINISH-已完成,ACTIVE-進行中 |
+
+
+## 查詢單筆借出委託
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "orderId": "6385c0b3e0debdb6feb06e97",
+        "currency": "USDT",
+        "size": "11",
+        "filledSize": "0",
+        "dailyIntRate": "0.002",
+        "term": 7,
+        "createdAt": 1669710002360,
+        "status": "ACTIVE"
+    }
+}
+```
+
+### HTTP請求
+`GET /api/v2/margin/lend`
+
+### 請求示例
+`GET  /api/v2/margin/lend?orderId=6385c0b3e0debdb6feb06e97`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求參數
+| 請求參數 | 類型   | 含義       |
+| -------- | ------ | ---------- |
+| orderId  | STRING | 委託訂單id |
+
+### 返回值
+| 字段         | 含義                                        |
+| ------------ | ------------------------------------------- |
+| orderId      | 委託訂單id                                 |
+| currency     | 幣種code                                    |
+| size         | 委託總數量                                  |
+| filledSize   | 已成交數量                                  |
+| dailyIntRate | 日利率小數。 0.002表示0.2%                   |
+| term         | 期限，單位天                                |
+| createdAt    | 委託時間戳，單位毫秒                        |
+| status       | 委託訂單狀態: FINISH-已完成， ACTIVE-進行中 |
+
+
+## 查詢借出記錄
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669711220219,
+        "currentPage": 1,
+        "pageSize": 10,
+        "totalNum": 39,
+        "totalPage": 4,
+        "items": [
+            {
+                "tradeId": "637c85a754f4d9000122f510",
+                "currency": "USDT",
+                "size": "11",
+                "repaidSize": "11",
+                "interest": "0.15400056",
+                "accruedInterest": "0",
+                "term": 7,
+                "maturityTime": 1669709863747,
+                "status": "CLEAR",
+                "note": ""
+            },
+            {
+                "tradeId": "6335ab03503ab80001485cb3",
+                "currency": "USDT",
+                "size": "1117",
+                "repaidSize": "1117",
+                "interest": "15.63799944",
+                "accruedInterest": "0",
+                "term": 7,
+                "maturityTime": 1665066311258,
+                "status": "CLEAR",
+                "note": ""
+            }
+        ]
+    }
+}
+```
+
+### HTTP請求
+`GET /api/v2/margin/lend/trade/orders`
+
+### 請求示例
+`GET  /api/v2/margin/lend/trade/orders?currency=USDT&status=LEND&currentPage=1&pageSize=10`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求參數
+| 請求參數    | 類型   | 含義                                      |
+| ----------- | ------ | ----------------------------------------- |
+| currency    | STRING | 幣種code                                  |
+| status      | STRING | 借出交易單狀態: LEND-未結清，CLEAR-已結清 |
+| currentPage | INT    | 當前頁，默認 1                           |
+| pageSize    | INT    | 頁大小，  1<=pageSize<=100，    默認 50   |
+
+### 返回值
+| 字段            | 含義                                                   |
+| --------------- | ------------------------------------------------------ |
+| tradeId         | 借出交易訂單id                                        |
+| currency        | 幣種code                                               |
+| size            | 借出數量                                               |
+| repaidSize      | 已還款數量                                             |
+| interest        | 全部利息                                               |
+| accruedInterest | 應付利息                                               |
+| term            | 期限，單位天                                           |
+| maturityTime    | 到期時間戳，單位毫秒                                   |
+| status          | 借出交易單狀態: LEND-未結清，CLEAR-已結清              |
+| note            | 穿倉的狀態下有備註，備註借方穿倉，風險基金是否償還情況 |
+
+
 # 逐倉
-## 查詢逐倉交易對配置
+## 查詢逐倉交易對配置（廢棄）
 ```json
 {
     "code":"200000",
