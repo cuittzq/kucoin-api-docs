@@ -32,17 +32,43 @@ API分爲兩部分：**REST API和Websocket 實時數據流**
 
 **爲了進一步提升API安全性，KuCoin已經升級到了V2版本的API-KEY，驗籤邏輯也發生了一些變化，建議到[API管理頁面](https://www.kucoin.cc/account/api)添加並更換到新的API-KEY。KuCoin已經停止對老版本API-KEY的支持。[查看新的簽名方式](#99f215f459)**
 
-**10/01/23**:
+**10/02/17**:
 
-- 【新增】查詢槓桿交易對接口`GET /api/v2/margin/symbols`接口
-- 【新增】查詢借出幣種配置信息`GET /api/v2/margin/lend/config`接口
-- 【新增】分頁查詢借出委託 `GET /api/v2/margin/lend/orders`接口
-- 【新增】查詢單筆借出委託 `GET /api/v2/margin/lend`接口
-- 【新增】查詢借出記錄`GET /api/v2/margin/lend/trade/orders`接口
-- 【廢棄】查詢逐倉交易對配置`GET /api/v1/isolated/symbols`接口，請使用`GET /api/v2/margin/symbols`接口
-- 【廢棄】查詢活躍借出委託`GET /api/v1/margin/lend/active`、查詢歷史借出委託`GET /api/v1/margin/lend/done`接口，請使用`GET /api/v2/margin/lend/orders`
-- 【廢棄】查詢未結算出借記錄`GET /api/v1/margin/lend/trade/unsettled`、查詢已結算出借記錄`GET /api/v1/margin/lend/trade/settled`接口，請使用`GET /api/v2/margin/lend/trade/orders`接口
-  
+-【新增】查詢槓桿交易對接口`GET /api/v2/margin/symbols`接口
+-【新增】查詢借出幣種配置信息`GET /api/v2/margin/lend/config`接口
+-【新增】分頁查詢借出委託 `GET /api/v2/margin/lend/orders`接口
+-【新增】查詢單筆借出委託 `GET /api/v2/margin/lend`接口
+-【新增】查詢借出記錄`GET /api/v2/margin/lend/trade/orders`接口
+-【新增】獲取逐倉賬戶信息 `GET  /api/v2/isolated/accounts`
+-【新增】獲取全倉賬戶信息 `GET   /api/v2/margin/accounts`
+-【新增】查詢最大可轉出金額 `GET   /api/v2/margin/transferable`
+-【新增】獲取槓桿限額 `GET   /api/v2/margin/riskLimits`
+-【新增】申請借幣 `POST  /api/v2/margin/borrow`
+-【新增】一鍵還幣 `POST  /api/v2/margin/repay/all`
+-【新增】單筆還幣 `POST /api/v2/margin/repay/single`
+-【新增】查詢還幣記錄 `GET /api/v2/margin/repay`
+-【新增】槓桿下單 `POST /api/v2/margin/order`
+-【廢棄】查詢槓桿賬戶信息 `GET /api/v1/margin/account`, 請使用  `GET   /api/v2/margin/accounts`
+-【廢棄】查詢全倉/逐倉槓桿風險限額`GET /api/v1/risk/limit/strategy`, 請使用  `Get   /api/v2/margin/riskLimits`
+-【廢棄】發佈借入委託 `POST /api/v1/margin/borrow`, 請使用 `POST  /api/v2/margin/borrow`
+-【廢棄】查詢待還款記錄 `GET /api/v1/margin/borrow/outstanding`, 請使用 `GET /api/v2/margin/repay`
+-【廢棄】查詢已還款記錄 `GET /api/v1/margin/borrow/repaid`, 請使用 `GET /api/v2/margin/repay`
+-【廢棄】一鍵還款 `POST /api/v1/margin/repay/all`, 請使用 `POST  /api/v2/margin/repay/all`
+-【廢棄】單筆還款`POST /api/v1/margin/repay/single`, 請使用 `POST /api/v2/margin/repay/single`
+-【廢棄】查詢活躍借出委託`GET /api/v1/margin/lend/active`, 請使用 `GET /api/v2/margin/lend/orders`
+-【廢棄】查詢歷史借出委託`GET /api/v1/margin/lend/done`, 請使用 `GET /api/v2/margin/lend/orders`
+-【廢棄】查詢未結算出借記錄`GET /api/v1/margin/lend/trade/unsettled`, 請使用 `GET /api/v2/margin/lend/trade/orders`
+-【廢棄】查詢已結算出借記錄`GET /api/v1/margin/lend/trade/settled`, 請使用 `GET /api/v2/margin/lend/trade/orders`
+-【廢棄】借出市場信息`GET /api/v1/margin/market`, 請使用 `GET /api/v2/margin/lend/market`
+-【廢棄】查詢逐倉交易對配置`GET /api/v1/isolated/symbols`, 請使用  `GET  /api/v2/margin/symbols`
+-【廢棄】查詢逐倉賬戶信息`GET /api/v1/isolated/accounts`, 請使用 `GET  /api/v2/isolated/accounts`
+-【廢棄】查詢單個逐倉賬戶信息`GET /api/v1/isolated/account/{symbol}`, 請使用 `GET  /api/v2/isolated/accounts`
+-【廢棄】逐倉借入`POST /api/v1/isolated/borrow`, 請使用 `POST  /api/v2/margin/borrow`
+-【廢棄】查詢逐倉待還款記錄`GET /api/v1/isolated/borrow/outstanding`, 請使用 `GET /api/v2/margin/repay`
+-【廢棄】查詢逐倉已還款記錄`GET /api/v1/isolated/borrow/repaid`, 請使用 `GET /api/v2/margin/repay`
+-【廢棄】逐倉一鍵還款`POST /api/v1/isolated/repay/all`, 請使用 `POST  /api/v2/margin/repay/all`
+-【廢棄】逐倉單筆還款`POST /api/v1/isolated/repay/single`, 請使用 `POST /api/v2/margin/repay/single`
+
 **11/08/22**:
 
 - 【廢棄】廢棄`POST /api/v1/accounts`接口
@@ -4714,9 +4740,9 @@ turnover | 成交額
  currencies | String  |[可選] 需轉換的數字貨幣（多個幣種，請使用“,“進行間隔）。比如，BTC,ETH 。默認爲返回所有幣種的法幣價格|
 
 
-# 槓桿交易
+# 槓桿
 
-# 槓桿信息
+# 槓桿通用
 
 ## 獲取當前標記價格
 ```json
@@ -4788,7 +4814,7 @@ turnover | 成交額
 | liqDebtRatio | 爆倉負債率 |
 | maxLeverage | 槓桿倍數 |
 
-## 查詢槓桿賬戶信息
+## 查詢槓桿賬戶信息（廢棄）
 ```json
 {
     "code": "200000",
@@ -4839,7 +4865,7 @@ turnover | 成交額
 | liability | 當前總負債 |
 | maxBorrowSize | 當前可借數量 |
 
-## 查詢全倉/逐倉槓桿風險限額
+## 查詢全倉/逐倉槓桿風險限額（廢棄）
 ```json
 // 全倉返回值
 {
@@ -5010,10 +5036,9 @@ turnover | 成交額
 | priceLimitRate | 價格保護閾值                                             |
 | minFunds       | 最小交易金額                                             |
 
+# 槓桿借貸
 
-# 借貸
-
-## 發佈借入委託
+## 發佈借入委託（廢棄）
 ```json
 {
     "orderId":"a2111213",
@@ -5097,7 +5122,7 @@ turnover | 成交額
 | term | 期限 |
 | timestamp | 借入時間戳 |
 
-## 查詢待還款記錄
+## 查詢待還款記錄（廢棄）
 ```json
 {
     "currentPage":0,
@@ -5150,7 +5175,7 @@ turnover | 成交額
 | repaidSize | 已還數量  |
 | dailyIntRate | 日利率  |
 
-## 查詢已還款記錄
+## 查詢已還款記錄（廢棄）
 ```json
 {
     "currentPage":0,
@@ -5200,7 +5225,7 @@ turnover | 成交額
 | repaidSize | 已還款數量 |
 | dailyIntRate | 日利率  |
 
-## 一鍵還款
+## 一鍵還款（廢棄）
 ```json
 {
   "code": "200000",
@@ -5227,7 +5252,7 @@ turnover | 成交額
 ### 返回值
 當返回HTTP狀態碼200和code爲200000時,表示還款響應成功,否則表示還款失敗。
 
-## 單筆還款
+## 單筆還款（廢棄）
 ```json
 {
   "code": "200000",
@@ -5346,7 +5371,6 @@ turnover | 成交額
 當市場最優利率高於您的可接受最低日利率時，系統將以市場最優利率掛單。（市場最優利率即當下時刻所選期限的所有借出掛單的一檔利率。該利率將優先被成交。）
 
 當市場最優利率低於可接受最低日利率時，我們將以您設定的可接受最低日利率進行掛單借出。
-
 
 ## 查詢活躍借出委託（廢棄）
 ```json
@@ -5595,7 +5619,7 @@ turnover | 成交額
 | realizedProfit  | 該幣種的已實現收益數量 |
 | isAutoLend      | 是否開啓自動續借       |
 
-## 借出市場信息
+## 借出市場信息（廢棄）
 ```json
 [
     {
@@ -5719,8 +5743,6 @@ turnover | 成交額
 | maxDailyIntRate       | 最大日利率                                 |
 | precisionDailyIntRate | 日利率精度                                 |
 | terms                 | 期限,單位為:天, 逗號隔開,如: 7,14,28       |
-		
-
 
 ## 查詢借貸市場列表
 ```json
@@ -5765,8 +5787,6 @@ turnover | 成交額
 | size         | 借出數量     |
 | dailyIntRate | 日利率       |
 | term         | 期限，單位天 |
-
-
 
 ## 分頁查詢借出委託
 ```json
@@ -5826,7 +5846,6 @@ turnover | 成交額
 | createdAt    | 委託時間戳，單位毫秒                      |
 | status       | 委託訂單狀態: FINISH-已完成,ACTIVE-進行中 |
 
-
 ## 查詢單筆借出委託
 ```json
 {
@@ -5872,7 +5891,6 @@ turnover | 成交額
 | term         | 期限，單位天                                |
 | createdAt    | 委託時間戳，單位毫秒                        |
 | status       | 委託訂單狀態: FINISH-已完成， ACTIVE-進行中 |
-
 
 ## 查詢借出記錄
 ```json
@@ -5948,7 +5966,6 @@ turnover | 成交額
 | status          | 借出交易單狀態: LEND-未結清，CLEAR-已結清              |
 | note            | 穿倉的狀態下有備註，備註借方穿倉，風險基金是否償還情況 |
 
-
 # 逐倉
 ## 查詢逐倉交易對配置（廢棄）
 ```json
@@ -6013,7 +6030,7 @@ quoteBorrowEnable | quote幣種借入開關
 baseTransferInEnable | base幣種轉入開關
 quoteTransferInEnable | quote幣種轉入開關
 
-## 查詢逐倉賬戶信息
+## 查詢逐倉賬戶信息（廢棄）
 ```json
 {
     "code":"200000",
@@ -6100,7 +6117,7 @@ totalBalance | 當前幣種總資產金額
 holdBalance | 當前幣種凍結金額
 availableBalance | 可用餘額（總資產-凍結）
 
-## 查詢單個逐倉賬戶信息
+## 查詢單個逐倉賬戶信息（廢棄）
 ```json
 {
     "code": "200000",
@@ -6158,7 +6175,7 @@ liability | 當前幣種負債的本金,即未償還的本金
 interest | 當前幣種負債的負債的利息,即未償還的利息
 borrowableAmount | 可借數量
 
-## 逐倉借入
+## 逐倉借入（廢棄）
 ```json
 {
     "code": "200000",
@@ -6194,7 +6211,7 @@ orderId | 借入單號
 currency | 借入幣種
 actualBorrowSize | 實際借入金額
 
-## 查詢待還款記錄
+## 查詢待還款記錄（廢棄）
 ```json
 {
     "success": true,
@@ -6271,7 +6288,7 @@ period | 期限
 repaidSize | 已還數量
 dailyInterestRate | 日利率
 
-## 查詢已還款記錄
+## 查詢已還款記錄（廢棄）
 ```json
 {
     "code": "200000",
@@ -6342,7 +6359,7 @@ period | 期限
 dailyInterestRate | 日利率
 repayFinishAt | 還款完成時間
 
-## 一鍵還款
+## 一鍵還款（廢棄）
 ```json
 //request
 {
@@ -6378,7 +6395,7 @@ seqStrategy | String | 是 | 還款順序策略,`RECENTLY_EXPIRE_FIRST`:到期�
 ### 返回值
 當系統返回HTTP狀態碼`200`和系統代碼`200000`時，表示成功
 
-## 單筆還款
+## 單筆還款（廢棄）
 ```json
 //request
 {
@@ -6413,6 +6430,533 @@ loanId | String | 是 | 交易單號,設置該字段後，順序策略無效
 
 ### 返回值
 當系統返回HTTP狀態碼`200`和系統代碼`200000`時，表示成功
+
+# 槓桿交易
+## 獲取逐倉賬戶信息
+```json
+{
+	"code": "200000",
+	"data": [
+		{
+			"totalAssetOfQuoteCurrency": "3.4939947",
+			"totalLiabilityOfQuoteCurrency": "0.00239066",
+			"timestamp": 1668062174000,
+			"assets": [
+				{
+					"symbol": "MANA-USDT",
+					"debtRatio": "0",
+					"status": "BORROW",
+					"baseAsset": {
+						"currency": "MANA",
+						"borrowEnabled": true,
+						"transferInEnabled": true,
+						"liability": "0",
+						"total": "0",
+						"available": "0",
+						"hold": "0",
+						"maxBorrowSize": "1000"
+					},
+					"quoteAsset": {
+						"currency": "USDT",
+						"borrowEnabled": true,
+						"transferInEnabled": true,
+						"liability": "0",
+						"total": "0",
+						"available": "0",
+						"hold": "0",
+						"maxBorrowSize": "50000"
+					}
+				}
+			]
+		}
+	]
+}
+```
+該接口可以查詢逐倉賬戶信息
+### Http請求
+`GET  /api/v2/isolated/accounts`
+
+### 請求示例:
+`GET  /api/v2/isolated/accounts`
+
+### Api權限
+此接口需要**交易權限**。
+
+### 請求參數
+| 字段          | 類型   | 含義                                                    |
+| ------------- | ------ | ------------------------------------------------------- |
+| symbol        | String | [可選] 逐倉交易對，不傳查詢全部                         |
+| quoteCurrency | String | [可選] 計價幣種，目前只支持USDT、KCS、BTC，不傳默認USDT |
+
+
+### 返回值
+| 字段                          | 含義           |
+| ----------------------------- | -------------- |
+| totalAssetOfQuoteCurrency     | 計價幣種總資產 |
+| totalLiabilityOfQuoteCurrency | 計價幣種總負債 |
+| timestamp                     | 時間戳         |
+| assets                        | 資產列表       |
+
+| 字段       | 含義                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------------------- |
+| symbol     | 交易對                                                                                                |
+| debtRatio  | 負債率                                                                                                |
+| baseAsset  | base資產                                                                                              |
+| quoteAsset | quote資產                                                                                             |
+| status     | 倉位狀態,EFFECTIVE-生效 ， BANKRUPTCY-破產穿倉 ， LIQUIDATION-平倉中 ，REPAY -還款中 ，BORROW  借入中 |
+
+| 字段              | 含義                       |
+| ----------------- | -------------------------- |
+| currency          | 幣種                       |
+| borrowEnabled     | 是否可以藉入               |
+| transferInEnabled | 是否可以劃入               |
+| liability         | 負債數量                   |
+| total             | 總資產                     |
+| available         | 賬戶可用資產(總資產-凍結） |
+| hold              | 賬戶凍結資產               |
+| maxBorrowSize     | 用戶剩餘最大可藉           |
+
+## 獲取全倉賬戶信息
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "totalLiabilityOfQuoteCurrency": "0.976",
+        "totalAssetOfQuoteCurrency": "1.00",
+        "debtRatio": "0.976",
+        "status": "LIQUIDATION",
+        "timestamp": 1669708513820,
+        "assets": [
+            {
+                "currency": "BTC",
+                "borrowEnabled": true,
+                "transferInEnabled": false,
+                "liability": "0.976",
+                "total": "1.00",
+                "available": "0.024",
+                "hold": "0",
+                "maxBorrowSize": "0"
+            }
+        ]
+    }
+}
+```
+該接口可以查詢全倉賬戶信息
+
+### Http請求
+`GET   /api/v2/margin/accounts`
+
+### 請求示例:
+
+`GET  /api/v2/margin/accounts?quoteCurrency=BTC`
+
+### Api權限
+
+此接口需要**交易權限**。
+
+### 請求参数
+| 字段          | 類型   | 含義                                                    |
+| ------------- | ------ | ------------------------------------------------------- |
+| quoteCurrency | String | [可選] 計價幣種，目前只支持USDT、KCS、BTC，不傳默認USDT |
+
+### 返回值
+| 字段                          | 含義                                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| totalAssetOfQuoteCurrency     | 計價幣種總資產                                                                                         |
+| totalLiabilityOfQuoteCurrency | 計價幣種總負債                                                                                         |
+| debtRatio                     | 負債率                                                                                                 |
+| status                        | 倉位狀態；EFFECTIVE-生效 ， BANKRUPTCY-破產穿倉 ， LIQUIDATION-平倉中 ，REPAY -還款中 ，BORROW  借入中 |
+| assets                        | 資產列表                                                                                               |
+
+| 字段              | 含義                       |
+| ----------------- | -------------------------- |
+| currency          | 幣種                       |
+| borrowEnabled     | 是否可以藉入               |
+| transferInEnabled | 是否可以劃轉               |
+| liability         | 負債數量                   |
+| total             | 總資產                     |
+| available         | 賬戶可用資產(總資產-凍結） |
+| hold              | 賬戶凍結資產               |
+| maxBorrowSize     | 用戶剩餘最大可藉           |
+
+## 查詢最大可轉出金額
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+	"data": {
+		"balance": "100",
+		"available": "80",
+		"holds": "20",
+		"transferable": "20",
+		"timestamp": 1668062174000
+	}
+}
+```
+此接口可獲取全倉/逐倉槓桿最大可轉出金額
+
+### HTTP請求
+`GET   /api/v2/margin/transferable`
+
+### API权限
+此接口需要**交易权限**。
+
+### 請求参数
+| 字段       | 類型    | 含義                            |
+| ---------- | ------- | ------------------------------- |
+| isIsolated | Boolean | true-逐倉 ,false-全倉;默認false |
+| symbol     | String  | [可選] 逐倉交易對               |
+| currency   | String  | 幣種                            |
+
+### 返回值
+| 字段         | 含義           |
+| ------------ | -------------- |
+| total        | 總資產         |
+| available    | 可用資產       |
+| hold         | 凍結資產       |
+| transferable | 最大可轉出數量 |
+| timestamp    | 時間戳         |
+
+## 獲取槓桿限額
+**全倉:**
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": [
+        {
+            "timestamp": 1672733936758,
+            "currency": "USDT",
+            "borrowMaxAmount": "70000",
+            "buyMaxAmount": "71000",
+            "holdMaxAmount": "71001",
+            "precision": 8
+        },
+        {
+            "timestamp": 1672733936758,
+            "currency": "BTC",
+            "borrowMaxAmount": "46000",
+            "buyMaxAmount": "46500",
+            "holdMaxAmount": "46501",
+            "precision": 8
+        }
+    ]
+}
+```
+**逐倉:**
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": [
+        {
+            "timestamp": 1672734099363,
+            "symbol": "ACT-ETH",
+            "baseMaxBorrowAmount": "100",
+            "quoteMaxBorrowAmount": "800",
+            "baseMaxBuyAmount": "100",
+            "quoteMaxBuyAmount": "800",
+            "baseMaxHoldAmount": "100",
+            "quoteMaxHoldAmount": "800",
+            "basePrecision": 8,
+            "quotePrecision": 8
+        },
+        {
+            "timestamp": 1672734099363,
+            "symbol": "MANA-USDT",
+            "baseMaxBorrowAmount": "2700",
+            "quoteMaxBorrowAmount": "10000",
+            "baseMaxBuyAmount": "2800",
+            "quoteMaxBuyAmount": "20000",
+            "baseMaxHoldAmount": "2801",
+            "quoteMaxHoldAmount": "20001",
+            "basePrecision": 8,
+            "quotePrecision": 8
+        }
+    ]
+}
+```
+此接口可獲取全倉/逐倉槓桿限額
+
+### HTTP請求
+`GET   /api/v2/margin/riskLimits`
+
+### API权限
+此接口需要**通用权限*get*。
+
+### 請求参数
+| 字段       | 類型    | 含義                            |
+| ---------- | ------- | ------------------------------- |
+| isIsolated | Boolean | true-逐倉 ,false-全倉;默認false |
+| symbol     | String  | [可選] 交易對，逐倉過濾條件     |
+| currency   | String  | [可選] 幣種，全倉過濾條件       |
+
+**響應:全倉**
+
+| 字段            | 含義               |
+| --------------- | ------------------ |
+| currency        | 幣種               |
+| holdMaxAmount   | 最大持倉   |
+| borrowMaxAmount | 總最大借入 |
+| precision       | 借貸精度           |
+| buyMaxAmount    | 最大買入   |
+| borrowCoefficient | 借貸係數           |
+| marginCoefficient | 保證金係數         |
+
+**響應:逐倉**
+
+| 字段                 | 含義                  |
+| -------------------- | --------------------- |
+| symbol               | 交易對                |
+| baseMaxBorrowAmount  | base最大借入  |
+| quoteMaxBorrowAmount | quote最大借入 |
+| baseMaxBuyAmount     | base最大買入  |
+| quoteMaxBuyAmount    | quote最大買入 |
+| baseMaxHoldAmount    | base最大持倉  |
+| quoteMaxHoldAmount   | quote最大持倉 |
+| basePrecision        | base借貸精度          |
+| quotePrecision       | quote借貸精度         |
+| baseBorrowCoefficient  | base借貸係數          |
+| quoteBorrowCoefficient | quote借貸係數         |
+| baseMarginCoefficient  | base保證金係數        |
+| quoteMarginCoefficient | quote保證金係數       |
+
+## 申請借幣
+```json
+{
+	"code": "200000",
+	"timestamp": 1668062174000,
+	"data": {
+		"orderId": "5da6dba0f943c0c81f5d5db5",
+        "size":"20.9"
+	}
+}
+```
+該接口支持全倉、逐倉的借幣申請
+
+### HTTP請求
+`POST  /api/v2/margin/borrow`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求参数
+| 字段        | 類型    | 含義                            |
+| ----------- | ------- | ------------------------------- |
+| isIsolated  | Boolean | true-逐倉 ,false-全倉;默認false |
+| symbol      | String  | [可選] 交易對, 逐倉賬戶必填     |
+| currency    | String  | 借入幣種                        |
+| timeInForce | String  | 訂單時效策略  IOC, FOK          |
+| size        | String  | 借入數量                        |
+| maxRate     | String  | [可選] 最大利率                 |
+| term        | Int     | [可選] 期限                     |
+
+### 返回值
+| 字段    | 含義           |
+| ------- | -------------- |
+| orderId | 借入委託訂單ID |
+| size    | 成交金額       |
+
+## 一鍵還幣
+```json
+{
+	"code": "200000",
+	"data": {
+		"tradeId":"5da6dba0f4234345c81f5d50f",
+		"timestamp": 1668062174000
+	}
+}
+```
+該接口支持按幣種批量還款
+當返回http狀態碼200和code為200000時,表示還款響應成功,否則表示還款失敗。
+
+### HTTP請求
+`POST  /api/v2/margin/repay/all`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求参数
+| 字段       | 類型    | 含義                                                                                                                            |
+| ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| isIsolated | Boolean | true-逐倉 ,false-全倉;默認false                                                                                                 |
+| symbol     | String  | [可選] 全倉為空，逐倉有值                                                                                                       |
+| currency   | String  | 幣種                                                                                                                            |
+| size       | String  | 還款數量                                                                                                                        |
+| sequence   | String  | 還款順序策略,RECENTLY_EXPIRE_FIRST -到期時間優先,即優先歸還最快到期的貸款； HIGHEST_RATE_FIRST-利率優先，即優先歸還利率高的貸款 | ### 返回值 |
+
+| 字段      | 含義   |
+| --------- | ------ |
+| tradeId   | 交易ID |
+| timestamp | 時間戳 |
+
+## 單筆還幣
+```json
+{
+	"code": "200000",
+	"data": {
+		"tradeId":"5da6dba0f4234345c81f5d50f",
+		"timestamp": 1668062174000
+	}
+}
+```
+該接口支持單筆還款
+當返回http狀態碼200和code為200000時,表示還款響應成功,否則表示還款失敗。
+
+### HTTP請求
+`POST /api/v2/margin/repay/single`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求参数
+| 字段       | 類型    | 含義                            |
+| ---------- | ------- | ------------------------------- |
+| isIsolated | Boolean | true-逐倉 ,false-全倉;默認false |
+| symbol     | String  | [可選] 全倉為空，逐倉有值       |
+| currency   | String  | 幣種                            |
+| size       | String  | 還款數量                        |
+| tradeId    | String  | 借出交易單ID                    |
+
+### 返回值
+| 字段      | 含義   |
+| --------- | ------ |
+| tradeId   | 交易ID |
+| timestamp | 時間戳 |
+
+## 查詢還幣記錄
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669708513820,
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalNum": 1,
+        "totalPage": 1,
+        "items": [
+            {
+                "tradeId": "5da6dba0f943c0c81f5d5db5",
+                "currency": "USDT",
+                "principal": "50000",
+                "interest": "50",
+                "repaidSize": "4000",
+                "maturityTime": 1668062174000,
+                "dailyIntRate": "0.0004",
+                "term": 28,
+                "status": "ACTIVE"
+            }
+        ]
+    }
+}
+```
+該接口支持查詢還幣記錄
+
+### HTTP請求
+`GET /api/v2/margin/repay`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求参数
+| 字段        | 類型    | 含義                                       |
+| ----------- | ------- | ------------------------------------------ |
+| currentPage | Int     | [可選] 當前頁,默認 1                       |
+| pageSize    | Int     | [可選] 頁大小，  1<=pageSize<=100，默認 50 |
+| isIsolated  | Boolean | true-逐倉 ,false-全倉;默認false            |
+| symbol      | String  | [可選] 逐倉交易對                          |
+| status      | String  | FINISH-已完成， ACTIVE-進行中              |
+| currency    | String  | [可選] 幣種                                |
+| startTime   | Long    | [可選] 開始時間                            |
+| endTime     | Long    | [可選] 結束時間                            |
+
+### 返回值
+| 字段         | 含義                          |
+| ------------ | ----------------------------- |
+| tradeId      | 交易單ID                      |
+| currency     | 幣種                          |
+| principal    | 借款數量                      |
+| interest     | 總計利息                      |
+| repaidSize   | 已歸還數量(含本金+利息)       |
+| maturityTime | 到期時間                      |
+| dailyIntRate | 日利率                        |
+| term         | 期限                          |
+| status       | FINISH-已完成， ACTIVE-進行中 |
+
+## 槓桿下單
+```json
+{
+	"code": "200000",
+	"data": [
+		{
+			"orderId":"5bd6e9286d99522a52e458de",
+			"borrowSize":10.2,
+			"loanApplyId":"600656d9a33ac90009de4f6f"
+		}
+	]
+}
+```
+該接口支持槓桿全倉、逐倉下單交易
+
+### HTTP請求
+`POST /api/v2/margin/order`
+
+### API權限
+此接口需要**交易權限**。
+
+### 請求参数
+**下單公有參數:**
+
+| 字段       | 類型    | 含義                                                                                     |
+| ---------- | ------- | ---------------------------------------------------------------------------------------- |
+| isIsolated | Boolean | true-逐倉 ,false-全倉;默認false                                                          |
+| clientOid  | String  | 客戶端創建的唯一標識，建議使用uuid                                                       |
+| side       | String  | buy（買） 或 sell（賣）                                                                  |
+| symbol     | String  | 交易對 比如，ETH-BTC                                                                     |
+| type       | String  | [可选] 訂單類型 limit和market(默認爲 limit)                                              |
+| remark     | String  | [可选] 下單備註，長度不超過100個字符（UTF-8）                                            |
+| stp        | String  | [可选] 自成交保護（self 此接口需要**交易权限**。 prevention）分爲CN, CO, CB , DC四種策略 |
+| autoBorrow | Boolean | [可选] 自動借幣下單，即系統自動以市場最優利率借幣再下單。 (目前只支持全倉不支持逐倉)     |
+
+**limit 限价单额外所需請求参数:**
+
+| 字段        | 類型    | 含義                                                   |
+| ----------- | ------- | ------------------------------------------------------ |
+| price       | String  | 指定幣種的價格                                         |
+| size        | String  | 指定幣種的數量                                         |
+| timeInForce | String  | [可选] 訂單時效策略:GTC, GTT, IOC, FOK (默認爲GTC)     |
+| cancelAfter | Long    | [可选] n秒之後取消，訂單時效策略爲 GTT                 |
+| postOnly    | Boolean | [可选] 被動委託的標識, 當訂單時效策略爲IOC或FOK 時無效 |
+| hidden      | Boolean | [可选] 是否隱藏（買賣盤中不展示）                      |
+| iceberg     | Boolean | [可选] 冰山單中是否僅顯示訂單的可見部分                |
+| visibleSize | String  | [可选] 冰山單最大的展示數量                            |
+
+**market 市價單額外所需請求參數：**
+
+| 字段  | 類型   | 含義                     |
+| ----- | ------ | ------------------------ |
+| size  | String | [可选] size和funds二選一 |
+| funds | String | [可选] size和funds二選一 |
+
+### 返回值
+| 字段        | 含義                                   |
+| ----------- | -------------------------------------- |
+| orderId     | 订单ID                                 |
+| borrowSize  | 借幣數量，只有在自動借幣下單後才返回   |
+| loanApplyId | 借幣申請ID，只有在自動借幣下單後才返回 |
+
 
 # 其他接口
 
