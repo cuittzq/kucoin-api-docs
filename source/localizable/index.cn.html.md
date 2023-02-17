@@ -32,7 +32,7 @@ API分爲兩部分：**REST API和Websocket 實時數據流**
 
 **爲了進一步提升API安全性，KuCoin已經升級到了V2版本的API-KEY，驗籤邏輯也發生了一些變化，建議到[API管理頁面](https://www.kucoin.cc/account/api)添加並更換到新的API-KEY。KuCoin已經停止對老版本API-KEY的支持。[查看新的簽名方式](#99f215f459)**
 
-**10/02/17**:
+**17/02/23**:
 
 -【新增】查詢槓桿交易對接口`GET /api/v2/margin/symbols`接口
 -【新增】查詢借出幣種配置信息`GET /api/v2/margin/lend/config`接口

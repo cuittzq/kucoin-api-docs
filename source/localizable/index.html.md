@@ -31,16 +31,41 @@ To get the latest updates in API, you can click ‘Watch’ on our [KuCoin Docs 
 **To reinforce the security of the API, KuCoin upgraded the API key to version 2.0, the validation logic has also been changed. It is recommended to [create](https://www.kucoin.com/account/api) and update your API key to version 2.0. The API key of version 1.0 is invalid. [Check new signing method](#signing-a-message)**
 
 
-**10/01/23**:
-
+**17/02/23**:
 - add Query Margin Trading Pairs `GET /api/v2/margin/symbols`interface
 - add Query Lending Configuration `GET /api/v2/margin/lend/config`interface
 - add Lending Order Query (Paginated) `GET /api/v2/margin/lend/orders`interface
 - add Query Single Lending Order `GET /api/v2/margin/lend`interface
 - add Query Lending Records `GET /api/v2/margin/lend/trade/orders`interface
-- Deprecate `GET /api/v1/isolated/symbols`interface， please use `GET /api/v2/margin/symbols`interface
-- Deprecate `GET /api/v1/margin/lend/active`interface and `GET /api/v1/margin/lend/done`interface， please use `GET /api/v2/margin/lend/orders`
-- Deprecate `GET /api/v1/margin/lend/trade/unsettled`interface and `GET /api/v1/margin/lend/trade/settled`interface， please use`GET /api/v2/margin/lend/trade/orders`interface
+- add Get Isolated Margin Account Info `GET /api/v2/isolated/accounts`
+- add Get Cross Margin Account Info  `GET /api/v2/margin/accounts`
+- add Query the Max Transferrable Amount  `Get /api/v2/margin/transferable`
+- add Get the Leverage Limit `Get /api/v2/margin/riskLimits`
+- add Apply for a Loan `POST /api/v2/margin/borrow`
+- add Quick Repayment `POST /api/v2/margin/repay/all`
+- add Single Repayment `POST /api/v2/margin/repay/single`
+- add Query Repayment Records `GET /api/v2/margin/repay`
+- add Margin Order Placement `POST /api/v2/margin/order`
+- Deprecate  `GET /api/v1/margin/account`, please use  `GET   /api/v2/margin/accounts`
+- Deprecate  `GET /api/v1/risk/limit/strategy`, please use  `Get   /api/v2/margin/riskLimits`
+- Deprecate  `POST /api/v1/margin/borrow`, please use `POST  /api/v2/margin/borrow`
+- Deprecate  `GET /api/v1/margin/borrow/outstanding`, please use `GET /api/v2/margin/repay`
+- Deprecate  `GET /api/v1/margin/borrow/repaid`, please use `GET /api/v2/margin/repay`
+- Deprecate  `POST /api/v1/margin/repay/all`, please use `POST  /api/v2/margin/repay/all`
+- Deprecate  `POST /api/v1/margin/repay/single`, please use `POST /api/v2/margin/repay/single`
+- Deprecate  `GET /api/v1/margin/lend/active`, please use `GET /api/v2/margin/lend/orders`
+- Deprecate  `GET /api/v1/margin/lend/done`, please use `GET /api/v2/margin/lend/orders`
+- Deprecate  `GET /api/v1/margin/lend/trade/unsettled`, please use `GET /api/v2/margin/lend/trade/orders`
+- Deprecate  `GET /api/v1/margin/lend/trade/settled`, please use `GET /api/v2/margin/lend/trade/orders`
+- Deprecate  `GET /api/v1/margin/market`, please use `GET /api/v2/margin/lend/market`
+- Deprecate  `GET /api/v1/isolated/symbols`, please use  `GET  /api/v2/margin/symbols`
+- Deprecate  `GET /api/v1/isolated/accounts`, please use `GET  /api/v2/isolated/accounts`
+- Deprecate  `GET /api/v1/isolated/account/{symbol}`, please use `GET  /api/v2/isolated/accounts`
+- Deprecate  `POST /api/v1/isolated/borrow`, please use `POST  /api/v2/margin/borrow`
+- Deprecate  `GET /api/v1/isolated/borrow/outstanding`, please use `GET /api/v2/margin/repay`
+- Deprecate  `GET /api/v1/isolated/borrow/repaid`, please use `GET /api/v2/margin/repay`
+- Deprecate  `POST /api/v1/isolated/repay/all`, please use `POST  /api/v2/margin/repay/all`
+- Deprecate  `POST /api/v1/isolated/repay/single`, please use `POST /api/v2/margin/repay/single`
 
 **11/08/22**:
 
@@ -4840,7 +4865,7 @@ Request via this endpoint to get the fiat price of the currencies for the availa
 | currencies | String |*[Optional]* Comma-separated cryptocurrencies to be converted into fiat, e.g.: BTC,ETH, etc. Default to return the fiat price of all currencies.|
 
 
-# Margin Trade
+# Margin
 
 # Margin Info
 
@@ -4915,7 +4940,7 @@ Request via this endpoint to get the configure info of the margin.
 | liqDebtRatio | The debt ratio of the forced liquidation |
 | maxLeverage | Max leverage available |
 
-## Get Margin Account
+## Get Margin Account（Deprecate）
 ```json
 {
     "code": "200000",
@@ -4966,7 +4991,7 @@ This endpoint requires the `General` permission.
 | liability | Total liabilities |
 | maxBorrowSize | Available size to borrow |
 
-## Query the cross/isolated margin risk limit
+## Query the cross/isolated margin risk limit（Deprecate）
 ```json
 // CROSS MARGIN RESPONSES
 {
@@ -5070,7 +5095,6 @@ This API is restricted for each account, the request rate limit is `1 times/3s`.
 | basePrecision | Base currency precision |
 | quotePrecision | Quote currency precision|
 
-
 ## Query Margin Trading Pairs
 ```json 
 {
@@ -5138,10 +5162,9 @@ This API endpoint requires the `General` permission..
 | priceLimitRate | The price protection threshold.                                                                                       |
 | minFunds       | Minimum transaction amount                                                                                            |
 
-
 # Borrow & Lend
 
-## Post Borrow Order
+## Post Borrow Order （Deprecate）
 ```json
 {
     "orderId": "a2111213",
@@ -5229,7 +5252,7 @@ This endpoint requires the **"Trade"** permission.
 | term | Term |
 | timestamp | Borrow time|
 
-## Get Repay Record
+## Get Repay Record（Deprecate）
 ```json
 {
     "currentPage": 0,
@@ -5285,7 +5308,7 @@ This endpoint requires the **"General"** permission.
 | repaidSize | Repaid size  |
 | dailyIntRate | Daily interest rate   |
 
-## Get Repayment Record
+## Get Repayment Record（Deprecate）
 ```json
 {
     "pageSize": 0,
@@ -5335,7 +5358,7 @@ This endpoint requires the **"General"** permission.
 | repaidSize | Repaid size |
 | dailyIntRate | Daily interest rate |
 
-## One-Click Repayment
+## One-Click Repayment（Deprecate）
 ```json
 {
   "code": "200000",
@@ -5362,7 +5385,7 @@ This endpoint requires the **"Trade"** permission.
 ### RESPONSES
 A successful repayment response is indicated by an HTTP status code 200 and system code 200000. If the system returns other code, it means the repayment fails.
 
-## Repay a Single Order
+## Repay a Single Order（Deprecate）
 ```json
 {
   "code": "200000",
@@ -5485,7 +5508,6 @@ This endpoint requires the **"Trade"** permission.
 When the priority interest rate is higher than the acceptable min. day rate, the system will place lending orders at the rate of the former one. The priority interest rate is the optimal market rate for all pending orders of the selected lending period, orders with this interest rate will be prioritized for auto-lending.
 
 When the priority interest rate is lower than the acceptable min. day rate, the system will place lending orders at the rate of the latter one.
-
 
 ## Get Active Order（Deprecate）
 ```json
@@ -5735,7 +5757,7 @@ This endpoint requires the **"Trade"** permission.
 | realizedProfit  | Realized profit       |
 | isAutoLend      | Auto-lend enabled or not |
 
-## Lending Market Data
+## Lending Market Data（Deprecate）
 ```json
 [
     {
@@ -5812,7 +5834,6 @@ This endpoint requires the **"General"** permission.
 | term         | Term (Unit: Day)                         |
 | timestamp    | Time of execution in nanosecond          |
 
-
 ## Query Lending Configuration
 ```json
  {
@@ -5863,8 +5884,6 @@ This API endpoint requires the `General` permission..
 | maxDailyIntRate       | Maximum daily interest rate                                                                                      |
 | precisionDailyIntRate | Daily interest rate precision                                                                                    |
 | terms                 | Term of the loan. Units in days. Comma-separated. Example: 7,14,28                                               |
-		
-
 
 ## Query Lending Market List
 ```json
@@ -5907,8 +5926,6 @@ This API endpoint requires the `General` permission..
 | size         | Loan amount                  |
 | dailyIntRate | Daily interest rate          |
 | term         | Term of loan. Units in days. |
-
-
 
 ## Lending Order Query (Paginated)
 ```json 
@@ -5967,7 +5984,6 @@ This API endpoint requires the `Trade` permission.
 | createdAt    | Time order was placed (units: milliseconds)             |
 | status       | Order status: FINISH-completed, ACTIVE-in progress.     |
 
-
 ## Query Single Lending Order
 ```json
 {
@@ -6013,7 +6029,6 @@ This API endpoint requires the `Trade` permission.
 | term         | Term of loan (units in days)                            |
 | createdAt    | Time order was placed (units: milliseconds)             |
 | status       | Order status: FINISH-completed, ACTIVE-in progress.     |
-
 
 ## Query Lending Records
 ```json
@@ -6153,7 +6168,7 @@ quoteBorrowEnable | quote coin type borrow switch
 baseTransferInEnable | base coin type transfer switch 
 quoteTransferInEnable | quote coin type transfer switch
 
-## Query Isolated Margin Account Info
+## Query Isolated Margin Account Info（Deprecate）
 ```json
 {
     "code":"200000",
@@ -6240,7 +6255,7 @@ totalBalance | Current coin type asset amount
 holdBalance | Current coin type frozen 
 availableBalance | The available balance (available assets - frozen assets)
 
-## Query Single Isolated Margin Account Info
+## Query Single Isolated Margin Account Info（Deprecate）
 ```json
 {
     "code": "200000",
@@ -6296,7 +6311,7 @@ liability | The principal of the of current coin liability (the outstanding prin
 interest | The interest of the liability of the current coin (the outstanding interest) 
 borrowableAmount | The borrowable amount
 
-## Isolated Margin Borrowing
+## Isolated Margin Borrowing（Deprecate）
 ```json
 {
     "code": "200000",
@@ -6332,7 +6347,7 @@ orderId | Borrow order ID
 currency | Borrowed coin type 
 actualBorrowSize | Actual borrowed amount
 
-## Query Outstanding Repayment Records
+## Query Outstanding Repayment Records（Deprecate）
 ```json
 {
     "success": true,
@@ -6409,7 +6424,7 @@ period | Term
 repaidSize | Amount repaid 
 dailyInterestRate | Daily interest
 
-## Query Repayment Records
+## Query Repayment Records（Deprecate）
 ```json
 {
     "code": "200000",
@@ -6480,7 +6495,7 @@ period | Term
 dailyInterestRate | Daily interest 
 repayFinishAt | Repayment time
 
-## Quick Repayment
+## Quick Repayment（Deprecate）
 ```json
 //request
 {
@@ -6516,7 +6531,7 @@ seqStrategy | String | Yes | Repayment sequence strategy, `RECENTLY_EXPIRE_FIRST
 ### RESPONSES
 When the system returns HTTP status code `200` and system code `200000`, it indicates that the response is successful.
 
-## Single Repayment
+## Single Repayment（Deprecate）
 ```json
 //request
 {
@@ -6551,6 +6566,525 @@ loanId | String | Yes | Trade order number; when this field is configured, the s
 
 ### RESPONSES
 When the system returns HTTP status code `200` and system code `200000`, it indicates that the response is successful.
+
+# Margin Trade
+## Get Isolated Margin Account Info
+```json 
+{
+    "code": "200000",
+    "data": [
+        {
+            "totalAssetOfQuoteCurrency": "3.4939947",
+            "totalLiabilityOfQuoteCurrency": "0.00239066",
+            "timestamp": 1668062174000,
+            "assets": [
+                {
+                    "symbol": "MANA-USDT",
+                    "debtRatio": "0",
+                    "status": "BORROW",
+                    "baseAsset": {
+                        "currency": "MANA",
+                        "borrowEnabled": true,
+                        "transferInEnabled": true,
+                        "liability": "0",
+                        "total": "0",
+                        "available": "0",
+                        "hold": "0",
+                        "maxBorrowSize": "1000"
+                    },
+                    "quoteAsset": {
+                        "currency": "USDT",
+                        "borrowEnabled": true,
+                        "transferInEnabled": true,
+                        "liability": "0",
+                        "total": "0",
+                        "available": "0",
+                        "hold": "0",
+                        "maxBorrowSize": "50000"
+                    }
+                }
+            ]
+        }
+    ]
+}
+``` 
+This API is used to query isolated margin account info.
+### HTTP REQUEST
+`GET /api/v2/isolated/accounts`
+
+### Example
+`GET /api/v2/isolated/accounts`
+
+### API Permission
+This API endpoint requires the `Trade`  permission.
+
+### PARAMETERS
+| Field         | Type   | Definition                                                                                                            |
+| ------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| symbol        | String | [Optional] For isolated trading pairs. Queries all when no argument is passed.                                        |
+| quoteCurrency | String | [Optional] The quote currency. Currently only supports USDT, KCS, and BTC. Defaults to USDT if no argument is passed. |
+
+
+### RESPONSES
+| Field                         | Definition                                |
+| ----------------------------- | ----------------------------------------- |
+| totalAssetOfQuoteCurrency     | Total assets in the quoted currency.      |
+| totalLiabilityOfQuoteCurrency | Total liabilities in the quoted currency. |
+| timestamp                     | The timestamp.                            |
+| assets                        | A list of the assets.                     |
+
+| Field      | Definition                                                                                                                                                                                                                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| symbol     | The trading pair.                                                                                                                                                                                                                       |
+| debtRatio  | The debt ratio.                                                                                                                                                                                                                         |
+| baseAsset  | The base asset.                                                                                                                                                                                                                         |
+| quoteAsset | The quoted asset.                                                                                                                                                                                                                       |
+| status     | The position status: EFFECTIVE - The position is effective. BANKRUPTCY - The position has a negative balance. LIQUIDATION - The position is being liquidated. REPAY - The position is being repaid. BORROW - The position is borrowing. |
+
+| Field             | Definition                                                          |
+| ----------------- | ------------------------------------------------------------------- |
+| currency          | The currency type.                                                  |
+| borrowEnabled     | Is borrowing enabled?                                               |
+| transferInEnabled | Is transfer-in enabled?                                             |
+| liability         | The amount of liabilities.                                          |
+| total             | The total assets.                                                   |
+| available         | The available assets in the account (total assets - frozen assets). |
+| hold              | The frozen assets in the account.                                   |
+| maxBorrowSize     | The max remaining borrowable amount.                                |
+
+## Get Cross Margin Account Info
+```json 
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "totalLiabilityOfQuoteCurrency": "0.976",
+        "totalAssetOfQuoteCurrency": "1.00",
+        "debtRatio": "0.976",
+        "status": "LIQUIDATION",
+        "timestamp": 1669708513820,
+        "assets": [
+            {
+                "currency": "BTC",
+                "borrowEnabled": true,
+                "transferInEnabled": false,
+                "liability": "0.976",
+                "total": "1.00",
+                "available": "0.024",
+                "hold": "0",
+                "maxBorrowSize": "0"
+            }
+        ]
+    }
+}
+``` 
+This API is used to query cross margin account info.
+
+### HTTP REQUEST
+`GET /api/v2/margin/accounts`
+
+### Example
+`GET /api/v2/margin/accounts?quoteCurrency=BTC`
+
+### API Permission
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Field         | Type   | Definition                                                                                                            |
+| ------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| quoteCurrency | String | [Optional] The quote currency. Currently only supports USDT, KCS, and BTC. Defaults to USDT if no argument is passed. |
+
+
+### RESPONSES
+| Field                         | Definition                                                                                                                                                                                                                              |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| totalAssetOfQuoteCurrency     | Total assets in the quoted currency.                                                                                                                                                                                                    |
+| totalLiabilityOfQuoteCurrency | Total liabilities in the quoted currency.                                                                                                                                                                                               |
+| debtRatio                     | The debt ratio.                                                                                                                                                                                                                         |
+| status                        | The position status: EFFECTIVE - The position is effective. BANKRUPTCY - The position has a negative balance. LIQUIDATION - The position is being liquidated. REPAY - The position is being repaid. BORROW - The position is borrowing. |
+| assets                        | A list of the assets.                                                                                                                                                                                                                   |
+
+| Field             | Definition                                                          |
+| ----------------- | ------------------------------------------------------------------- |
+| currency          | The currency type.                                                  |
+| borrowEnabled     | Is borrowing enabled?                                               |
+| transferInEnabled | Is transfer-in enabled?                                             |
+| liability         | The amount of liabilities.                                          |
+| total             | The total assets.                                                   |
+| available         | The available assets in the account (total assets - frozen assets). |
+| hold              | The frozen assets in the account.                                   |
+| maxBorrowSize     | The max remaining borrowable amount.                                |
+
+## Query the Max Transferrable Amount
+```json
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "balance": "100",
+        "available": "80",
+        "holds": "20",
+        "transferable": "20",
+        "timestamp": 1668062174000
+    }
+}
+ ``` 
+This API is used to obtain the maximum transferrable amount of cross margin/isolated margin.
+
+### HTTP REQUEST
+`Get /api/v2/margin/transferable`
+
+### API Permission
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Field      | Type    | Definition                                                     |
+| ---------- | ------- | -------------------------------------------------------------- |
+| isIsolated | Boolean | true - isolated margin, false - cross margin; default = false. |
+| symbol     | String  | [Optional] The isolated margin pair.                           |
+| currency   | String  | The currency type.                                             |
+
+### RESPONSES
+| Field        | Definition                          |
+| ------------ | ----------------------------------- |
+| total        | The total assets.                   |
+| available    | The available assets in the account |
+| hold         | The frozen assets in the account.   |
+| transferable | The maximum transferable quantity.  |
+| timestamp    | The timestamp.                      |
+
+## Get the Leverage Limit
+```json 
+// MARGIN RESPONSES
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": [
+        {
+            "timestamp": 1672733936758,
+            "currency": "USDT",
+            "borrowMaxAmount": "70000",
+            "buyMaxAmount": "71000",
+            "holdMaxAmount": "71001",
+            "precision": 8
+        },
+        {
+            "timestamp": 1672733936758,
+            "currency": "BTC",
+            "borrowMaxAmount": "46000",
+            "buyMaxAmount": "46500",
+            "holdMaxAmount": "46501",
+            "precision": 8
+        }
+    ]
+}
+```
+```json 
+// Isolated RESPONSES
+{
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": [
+        {
+            "timestamp": 1672734099363,
+            "symbol": "ACT-ETH",
+            "baseMaxBorrowAmount": "100",
+            "quoteMaxBorrowAmount": "800",
+            "baseMaxBuyAmount": "100",
+            "quoteMaxBuyAmount": "800",
+            "baseMaxHoldAmount": "100",
+            "quoteMaxHoldAmount": "800",
+            "basePrecision": 8,
+            "quotePrecision": 8
+        },
+        {
+            "timestamp": 1672734099363,
+            "symbol": "MANA-USDT",
+            "baseMaxBorrowAmount": "2700",
+            "quoteMaxBorrowAmount": "10000",
+            "baseMaxBuyAmount": "2800",
+            "quoteMaxBuyAmount": "20000",
+            "baseMaxHoldAmount": "2801",
+            "quoteMaxHoldAmount": "20001",
+            "basePrecision": 8,
+            "quotePrecision": 8
+        }
+    ]
+}
+``` 
+This API is used to obtain the cross margin/isolated margin leverage limit.
+
+### HTTP REQUEST
+`Get /api/v2/margin/riskLimits`
+
+### API Permission
+This API endpoint requires the `General` permission.
+
+### PARAMETERS
+| Field      | Type    | Definition                                                     |
+| ---------- | ------- | -------------------------------------------------------------- |
+| isIsolated | Boolean | true - isolated margin, false - cross margin; default = false. |
+| symbol     | String  | [Optional] The trading pair, isolated position filter.         |
+| currency   | String  | [Optional] The currency type, cross position filter condition. |
+
+**Response: Cross Margin**
+
+| Field           | Definition                                |
+| --------------- | ----------------------------------------- |
+| currency        | The currency type.                        |
+| holdMaxAmount   | The max position (configurable).          |
+| borrowMaxAmount | The max borrowable amount (configurable). |
+| precision       | The precision of the loan.                |
+| buyMaxAmount    | The max buy amount (configurable).        |
+
+**Response: Isolated Margin**
+
+| Field                | Definition                                      |
+| -------------------- | ----------------------------------------------- |
+| symbol               | The trading pair.                               |
+| baseMaxBorrowAmount  | The base maximum borrow amount (configurable).  |
+| quoteMaxBorrowAmount | The quote maximum borrow amount (configurable). |
+| baseMaxBuyAmount     | The base maximum buy amount (configurable).     |
+| quoteMaxBuyAmount    | The quote maximum buy amount (configurable).    |
+| baseMaxHoldAmount    | The base maximum position (configurable).       |
+| quoteMaxHoldAmount   | The quote maximum position (configurable).      |
+| basePrecision        | The base precision of the loan.                 |
+| quotePrecision       | The quote precision of the loan.                |
+
+## Apply for a Loan
+```json 
+{
+    "code": "200000",
+    "timestamp": 1668062174000,
+    "data": {
+        "orderId": "5da6dba0f943c0c81f5d5db5",
+        "size": "20.9"
+    }
+}
+``` 
+This API is used to apply for loans.
+
+### HTTP REQUEST
+`POST /api/v2/margin/borrow`
+
+### API Permission
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Field       | Type    | Definition                                                          |
+| ----------- | ------- | ------------------------------------------------------------------- |
+| isIsolated  | Boolean | true - isolated margin, false - cross margin; default = false.      |
+| symbol      | String  | [Optional] The trading pair, required for isolated margin accounts. |
+| currency    | String  | The borrowed currency.                                              |
+| timeInForce | String  | The time in force (IOC, FOK).                                       |
+| size        | String  | The borrowed amount.                                                |
+| maxRate     | String  | [Optional] The maximum interest rate.                               |
+| term        | Int     | [Optional] The term of the loan.                                    |
+
+### RESPONSES
+| Field   | Definition                     |
+| ------- | ------------------------------ |
+| orderId | The order ID of the borrowing. |
+| size    | The transaction amount.        |
+
+## Quick Repayment
+```json 
+{
+    "code": "200000",
+    "data": {
+        "tradeId": "5da6dba0f4234345c81f5d50f",
+        "timestamp": 1668062174000
+    }
+}
+``` 
+This API is used to perform batch repayment. When the HTTP status code 200 and 200000 are returned, this means that repayment was successful. Any other code means that repayment failed.
+
+### HTTP REQUEST
+`POST /api/v2/margin/repay/all`
+
+### API Permission
+This API endpoint requires the **Trade **permission.
+
+### PARAMETERS
+| Field      | Type    | Definition                                                                                                                                                                                                                                                                                                |
+| ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isIsolated | Boolean | true - isolated margin, false - cross margin; default = false.                                                                                                                                                                                                                                            |
+| symbol     | String  | [Optional] Leave empty for cross margin, provide a value for isolated margin.                                                                                                                                                                                                                             |
+| currency   | String  | The currency type.                                                                                                                                                                                                                                                                                        |
+| size       | String  | The amount to be repaid.                                                                                                                                                                                                                                                                                  |
+| sequence   | String  | The repayment sequence policy. RECENTLY\_EXPIRE\_FIRST - Prioritizes the maturity date, meaning that priority is given to repaying loans that are due the soonest. HIGHEST\_RATE\_FIRST - Prioritizes the interest rate, meaning that priority is given to repaying loans with the highest interest rate. |
+
+### RESPONSES
+| Field     | Definition     |
+| --------- | -------------- |
+| tradeId   | The trade ID.  |
+| timestamp | The timestamp. |
+
+## Single Repayment
+```json 
+{
+    "code": "200000",
+    "data": {
+        "tradeId": "5da6dba0f4234345c81f5d50f",
+        "timestamp": 1668062174000
+    }
+}
+``` 
+This API is used to perform single repayment. When the HTTP status code 200 and 200000 are returned, this means that repayment was successful. Any other code means that repayment failed.
+
+### HTTP REQUEST
+`POST /api/v2/margin/repay/single`
+
+### API Permission
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+| Field      | Type    | Definition                                                                    |
+| ---------- | ------- | ----------------------------------------------------------------------------- |
+| isIsolated | Boolean | true - isolated margin, false - cross margin; default = false.                |
+| symbol     | String  | [Optional] Leave empty for cross margin, provide a value for isolated margin. |
+| currency   | String  | The currency type.                                                            |
+| size       | String  | The amount to be repaid.                                                      |
+| tradeId    | String  | The ID of the loan order.                                                     |
+
+### RESPONSES
+| Field     | Definition     |
+| --------- | -------------- |
+| tradeId   | The trade ID.  |
+| timestamp | The timestamp. |
+
+## Query Repayment Records
+```json
+ {
+    "success": true,
+    "code": "200",
+    "msg": "success",
+    "retry": false,
+    "data": {
+        "timestamp": 1669708513820,
+        "currentPage": 1,
+        "pageSize": 100,
+        "totalNum": 1,
+        "totalPage": 1,
+        "items": [
+            {
+                "tradeId": "5da6dba0f943c0c81f5d5db5",
+                "currency": "USDT",
+                "principal": "50000",
+                "interest": "50",
+                "repaidSize": "4000",
+                "maturityTime": 1668062174000,
+                "dailyIntRate": "0.0004",
+                "term": 28,
+                "status": "ACTIVE"
+            }
+        ]
+    }
+}
+```
+This API is used to query repayment records.
+
+### HTTP REQUEST
+`GET /api/v2/margin/repay`
+
+### API Permission
+This API endpoint requires the **Trade **permission.
+
+### PARAMETERS
+| Field       | Type    | Definition                                                     |
+| ----------- | ------- | -------------------------------------------------------------- |
+| currentPage | Int     | [Optional] The current page, defaults to 1.                    |
+| pageSize    | Int     | [Optional] The page size. 1<=pageSize<=100, defaults to 50.    |
+| isIsolated  | Boolean | true - isolated margin, false - cross margin; default = false. |
+| symbol      | String  | [Optional] The isolated margin pair.                           |
+| status      | String  | FINISH-completed, ACTIVE-in progress.                          |
+| currency    | String  | [Optional] The currency type.                                  |
+| startTime   | Long    | [Optional] The start time.                                     |
+| endTime     | Long    | [Optional] The end time.                                       |
+
+### RESPONSES
+| Field        | Definition                                          |
+| ------------ | --------------------------------------------------- |
+| tradeId      | The trade ID.                                       |
+| currency     | The currency type.                                  |
+| principal    | The borrowed amount.                                |
+| interest     | The total interest.                                 |
+| repaidSize   | The repaid amount (including principal + interest). |
+| maturityTime | The maturity date.                                  |
+| dailyIntRate | The daily interest.                                 |
+| term         | The term of the loan.                               |
+| status       | FINISH-completed, ACTIVE-in progress.               |
+
+## Margin Order Placement
+```json 
+{
+    "code": "200000",
+    "data": [
+        {
+            "orderId": "5bd6e9286d99522a52e458de",
+            "borrowSize": 10.2,
+            "loanApplyId": "600656d9a33ac90009de4f6f"
+        }
+    ]
+}
+``` 
+This API is used to place cross margin and isolated margin orders.
+
+### HTTP REQUEST
+`POST /api/v2/margin/order`
+
+### API Permission
+This API endpoint requires the `Trade` permission.
+
+### PARAMETERS
+**Order Public Parameters:**
+
+| Field      | Type    | Definition                                                                                                                                                                                          |
+| ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isIsolated | Boolean | true - isolated margin, false - cross margin; default = false.                                                                                                                                      |
+| clientOid  | String  | The unique identifier created by the client (UUID is recommended).                                                                                                                                  |
+| side       | String  | Buy or sell.                                                                                                                                                                                        |
+| symbol     | String  | The trading pair, such as ETH-BTC.                                                                                                                                                                  |
+| type       | String  | [Optional] The order type (limit or market). Defaults to limit.                                                                                                                                     |
+| remark     | String  | [Optional] The order remarks. The length should not exceed 100 characters (UTF-8).                                                                                                                  |
+| stp        | String  | [Optional] Self-trade prevention (this API requires **trading permissions**). Divided into four policies: CN, CO, CB, and DC.                                                                       |
+| autoBorrow | Boolean | [Optional] Automatically borrow assets to place an order (the platform will auto borrow assets at the best market interest rate, then places an order). At present, only cross margin is supported. |
+
+**Addition PARAMETERS required for limit orders:**
+
+| Field       | Type    | Definition                                                                     |
+| ----------- | ------- | ------------------------------------------------------------------------------ |
+| price       | String  | The price in the specified currency.                                           |
+| size        | String  | The amount of the specified currency.                                          |
+| timeInForce | String  | [Optional] The time in force (GTC, GTT, IOC, FOK). Defaults to GTC.            |
+| cancelAfter | Long    | [Optional] Cancel after n seconds. The time in force is GTT.                   |
+| postOnly    | Boolean | [Optional] The passive order ID. Invalid when the time in force is IOC or FOK. |
+| hidden      | Boolean | [Optional] Is the order hidden (not displayed in the order book)?              |
+| iceberg     | Boolean | [Optional] Display the visible part of the order in the iceberg list?          |
+| visibleSize | String  | [Optional] The max display quantity of the iceberg order.                      |
+
+**Addition PARAMETERS required for market orders**
+
+| Field | Type   | Definition                                |
+| ----- | ------ | ----------------------------------------- |
+| size  | String | [Optional] Choose one from size or funds. |
+| funds | String | [Optional] Choose one from size or funds. |
+
+### RESPONSES
+| Field       | Definition                                                                       |
+| ----------- | -------------------------------------------------------------------------------- |
+| orderId     | The order ID.                                                                    |
+| borrowSize  | The loan amount. Returned only after the automatic loan order is placed.         |
+| loanApplyId | The loan application ID. Returned only after the automatic loan order is placed. |
+
 
 # Others
 
