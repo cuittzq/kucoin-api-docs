@@ -37,15 +37,15 @@ To get the latest updates in API, you can click ‘Watch’ on our [KuCoin Docs 
 - add Lending Order Query (Paginated) `GET /api/v2/margin/lend/orders`interface
 - add Query Single Lending Order `GET /api/v2/margin/lend`interface
 - add Query Lending Records `GET /api/v2/margin/lend/trade/orders`interface
-- add Get Isolated Margin Account Info `GET /api/v2/isolated/accounts`
-- add Get Cross Margin Account Info  `GET /api/v2/margin/accounts`
-- add Query the Max Transferrable Amount  `Get /api/v2/margin/transferable`
-- add Get the Leverage Limit `Get /api/v2/margin/riskLimits`
-- add Apply for a Loan `POST /api/v2/margin/borrow`
-- add Quick Repayment `POST /api/v2/margin/repay/all`
-- add Single Repayment `POST /api/v2/margin/repay/single`
-- add Query Repayment Records `GET /api/v2/margin/repay`
-- add Margin Order Placement `POST /api/v2/margin/order`
+- add Get Isolated Margin Account Info `GET /api/v2/isolated/accounts` interface
+- add Get Cross Margin Account Info  `GET /api/v2/margin/accounts` interface
+- add Query the Max Transferrable Amount  `Get /api/v2/margin/transferable` interface
+- add Get the Leverage Limit `Get /api/v2/margin/riskLimits` interface
+- add Apply for a Loan `POST /api/v2/margin/borrow` interface
+- add Quick Repayment `POST /api/v2/margin/repay/all` interface
+- add Single Repayment `POST /api/v2/margin/repay/single` interface
+- add Query Repayment Records `GET /api/v2/margin/repay` interface
+- add Margin Order Placement `POST /api/v2/margin/order` interface
 - Deprecate  `GET /api/v1/margin/account`, please use  `GET   /api/v2/margin/accounts`
 - Deprecate  `GET /api/v1/risk/limit/strategy`, please use  `Get   /api/v2/margin/riskLimits`
 - Deprecate  `POST /api/v1/margin/borrow`, please use `POST  /api/v2/margin/borrow`
